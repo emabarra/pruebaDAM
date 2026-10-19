@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -110,5 +111,41 @@ fun NoticiaCard(noticia: Noticia, onClick: () -> Unit) {
                 color = Color.Gray
             )
         }
+    }
+}
+
+@Composable
+fun NoticiaDetalleView(noticia: Noticia, onBack: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Button(onClick = onBack, modifier = Modifier.padding(bottom = 12.dp)) {
+            Text("Volver")
+        }
+        Text(
+            text = noticia.categoria,
+            fontSize = 14.sp,
+            color = Color.Gray,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = noticia.fecha,
+            fontSize = 12.sp,
+            color = Color.Gray
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        Text(
+            text = noticia.titulo,
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = noticia.contenidoCompleto,
+            fontSize = 16.sp,
+            color = Color.DarkGray
+        )
     }
 }
