@@ -71,6 +71,12 @@ fun AppDrawer( /*Construye y gestiona el menú lateral de navegación desplegabl
                     onCloseDrawer()
                 }
             )
+
+            /*Alianzas*/
+            DrawerSimpleItem(
+                title = "Alianzas",
+                onClick = { onNavigate("alianas"); onCloseDrawer() }
+            )
         }
     }
 }
