@@ -22,6 +22,7 @@ import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -33,6 +34,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SearchBarDefaults.InputField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -338,4 +340,20 @@ fun BackButton(onClick: () -> Unit) {
         Spacer(modifier = Modifier.width(6.dp))
         Text("Volver a iniciar sesión", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = PrimaryCyan)
     }
+}
+
+@Composable
+fun SimpleModal(title: String, message: String, buttonText: String = "Aceptar", onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(buttonText, color = PrimaryCyan, fontWeight = FontWeight.Bold)
+            }
+        },
+        title = { Text(title, fontWeight = FontWeight.Bold, fontSize = 18.sp, color = DarkText) },
+        text = { Text(message, fontSize = 14.sp, color = Color.DarkGray) },
+        shape = RoundedCornerShape(16.dp),
+        containerColor = Color.White
+    )
 }
