@@ -183,53 +183,61 @@ fun DrawerExpandableItem(
 ){
     var expanded by remember { mutableStateOf(false) } /*Guarda de forma interna si la lista está desplegada(true) o contraída(false)*/
 
-    Column(modifier = Modifier.padding(16.dp)) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { expanded = !expanded },/*Al hacer click en la fila
+    Card(
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = !expanded },/*Al hacer click en la fila
                 cambia el estado de expanded invirtiendo su valor*/
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = title,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF1F2937)
-            )
-            Icon(
-                                            /*cambia dinámicamente la flecha del icono si (Up si está abierto, Down si está cerrado*/
-                imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                contentDescription = null,
-                tint = Color.Gray
-            )
-        }
-                            /*muestra o oculta las subopciones con una animación suave de transición*/
-        AnimatedVisibility(visible = expanded) {
-            Column(
-                modifier = Modifier.padding(top = 10.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                /*Recorre la lista de nombres y crea un contenedor redondeado de fondo gris suave para cada subopción*/
-                subItems.forEach { subItem ->
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(SubItemBgColor, shape = RoundedCornerShape(8.dp))
-                            .clickable { onSubItemClick(subItem) } /*Al presionar caulquier subopción, dispara esta función
+                Text(
+                    text = title,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF1F2937)
+                )
+                Icon(
+                    /*cambia dinámicamente la flecha del icono si (Up si está abierto, Down si está cerrado*/
+                    imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                    contentDescription = null,
+                    tint = Color.Gray
+                )
+            }
+            /*muestra o oculta las subopciones con una animación suave de transición*/
+            AnimatedVisibility(visible = expanded) {
+                Column(
+                    modifier = Modifier.padding(top = 10.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    /*Recorre la lista de nombres y crea un contenedor redondeado de fondo gris suave para cada subopción*/
+                    subItems.forEach { subItem ->
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(SubItemBgColor, shape = RoundedCornerShape(8.dp))
+                                .clickable { onSubItemClick(subItem) } /*Al presionar caulquier subopción, dispara esta función
                             pasando el nombre exacto de la sección seleccionada para realizar la navegación*/
-                            .padding(horizontal = 14.dp, vertical = 10.dp)
-                    ){
-                        Text(
-                            text = subItem,
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color(0xFF4B5563)
-                        )
+                                .padding(horizontal = 14.dp, vertical = 10.dp)
+                        ){
+                            Text(
+                                text = subItem,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = Color(0xFF4B5563)
+                            )
+                        }
                     }
                 }
             }
         }
     }
+
 }
