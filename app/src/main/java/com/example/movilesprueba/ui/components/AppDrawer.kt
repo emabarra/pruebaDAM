@@ -39,6 +39,12 @@ fun AppDrawer( /*Construye y gestiona el menú lateral de navegación desplegabl
                 title = "Noticias",
                 onClick = { onNavigate("noticias"); onCloseDrawer() }
             )
+
+            /*Indicadores de Productividad*/
+            DrawerSimpleItem(
+                title = "Indicadores de Productividad",
+                onClick = { onNavigate("indicadores"); onCloseDrawer }
+            )
         }
     }
 }
