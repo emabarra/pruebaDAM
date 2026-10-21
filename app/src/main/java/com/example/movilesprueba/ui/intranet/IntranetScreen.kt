@@ -11,10 +11,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material.icons.outlined.Visibility
@@ -291,7 +294,7 @@ fun CardContainer(content: @Composable ColumnScope.() -> Unit) {
 fun InputField(label: String, value: String, placeholder: String, isPassword: Boolean = false, onValueChange: (String) -> Unit) {
     var passwordVisible by remember { mutableStateOf(false) }
     Column {
-        Text(label, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = com.tuempresa.cenamad.ui.intranet.DarkText)
+        Text(label, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = DarkText)
         Spacer(modifier = Modifier.height(6.dp))
         OutlinedTextField(
             value = value,
@@ -321,5 +324,18 @@ fun PrimaryButton(text: String, onClick: () -> Unit) {
         modifier = Modifier.fillMaxWidth().height(48.dp)
     ) {
         Text(text, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White)
+    }
+}
+
+@Composable
+fun BackButton(onClick: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth().clickable { onClick() },
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(Icons.Default.ArrowBack, contentDescription = null, tint = PrimaryCyan, modifier = Modifier.size(16.dp))
+        Spacer(modifier = Modifier.width(6.dp))
+        Text("Volver a iniciar sesión", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = PrimaryCyan)
     }
 }
