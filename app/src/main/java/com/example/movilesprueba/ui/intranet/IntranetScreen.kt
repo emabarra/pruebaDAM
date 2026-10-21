@@ -1,17 +1,30 @@
 package com.example.movilesprueba.ui.intranet
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Shield
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.SearchBarDefaults.InputField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -86,5 +99,56 @@ fun IntranetScreen(viewModel: IntranetViewModel = viewModel()) {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun LoginView(onForgotPasswordClick: () -> Unit, onRegisterClick: () -> Unit) {
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var rememberMe by remember { mutableStateOf(false) }
+    var showWelcomeDialog by remember { mutableStateOf(false) }
+
+    if (showWelcomeDialog) {
+        SimpleModal(
+            title = "¡Bienvenido/a!",
+            message = "Hola $email, has ingresado correctamente a la Intranet de CENAMAD.",
+            onDismiss = { showWelcomeDialog = false }
+        )
+    }
+
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        CardContainer {
+            Text("Iniciar sesión", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = DarkText)
+            Spacer(modifier = Modifier.height(16.dp))
+
+            InputField(label = "Correo electrónico", value = email, placeholder = "nombre@institucion.cl", onValueChange = { email = it })
+            Spacer(modifier = Modifier.height(14.dp))
+            InputField(label = "Contraseña", value = password, placeholder = "Ingresa tu contraseña", isPassword = true, onValueChange = { password = it })
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Checkbox(checked = rememberMe, onCheckedChange = { rememberMe = it }, colors = CheckboxDefaults.colors(checkedColor = PrimaryCyan))
+                Text("Recuérdame", fontSize = 14.sp, color = Color.Gray)
+            }
+
+            Text(
+                text = "¿Olvidaste tu contraseña?",
+                color = PrimaryCyan,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.clickable { onForgotPasswordClick() }
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+            PrimaryButton(text = "Iniciar sesión") { if (email.isNotBlank()) showWelcomeDialog = true }
+
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Text("¿Aún no tienes cuenta? ", fontSize = 14.sp, color = Color.Gray)
+                Text("Regístrate", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = PrimaryCyan, modifier = Modifier.clickable { onRegisterClick() })
+            }
+        }
+
+        InfoCard(icon = Icons.Outlined.Shield, title = "Acceso institucional", description = "Este espacio está destinado a integrantes de la comunidad CENAMAD.")
     }
 }
