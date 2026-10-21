@@ -1,7 +1,15 @@
 package com.example.movilesprueba.ui.components
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 
 val TopBarColor = Color(0xFF00BCE4)
 val DrawerBgColor = Color(0xFFF8F9FA)
@@ -12,5 +20,17 @@ fun AppDrawer( /*Construye y gestiona el menú lateral de navegación desplegabl
     onNavigate: (String) -> Unit, /*Se ejecuta cuando el usuario presuana una opción del menú*/
     onCloseDrawer: () -> Unit /*Se ejecuta inmediatamente despúes de seleccionar una opción para cerrar automáticamente el menú lateral*/
 ){
+    ModalDrawerSheet(/*Define el panel visual interiror del menú lateral desplegable*/
+        drawerContainerColor = DrawerBgColor,
+        modifier = Modifier.width(320.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
 
+        }
+    }
 }
