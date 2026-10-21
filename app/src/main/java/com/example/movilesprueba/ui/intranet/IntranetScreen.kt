@@ -19,6 +19,8 @@ import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
@@ -307,5 +309,17 @@ fun InputField(label: String, value: String, placeholder: String, isPassword: Bo
             singleLine = true,
             shape = RoundedCornerShape(8.dp)
         )
+    }
+}
+
+@Composable
+fun PrimaryButton(text: String, onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(containerColor = PrimaryCyan),
+        shape = RoundedCornerShape(8.dp),
+        modifier = Modifier.fillMaxWidth().height(48.dp)
+    ) {
+        Text(text, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White)
     }
 }
