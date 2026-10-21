@@ -193,3 +193,69 @@ fun RecuperarPasswordView(onBackToLoginClick: () -> Unit) {
         InfoCard(icon = Icons.Outlined.Email, title = "Revisa tu correo", description = "Si no encuentras el mensaje, revisa también la carpeta de spam o correo no deseado.")
     }
 }
+
+// -----------------------------------------------------------
+// 3. REGISTRO
+// -----------------------------------------------------------
+@Composable
+fun RegistroView(onBackToLoginClick: () -> Unit) {
+    var name by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
+    var showRegisterDialog by remember { mutableStateOf(false) }
+
+    if (showRegisterDialog) {
+        SimpleModal(
+            title = "¡Registro Exitoso!",
+            message = "Bienvenido/a $name. Tu cuenta ha sido creada exitosamente.",
+            buttonText = "Iniciar sesión",
+            onDismiss = { showRegisterDialog = false; onBackToLoginClick() }
+        )
+    }
+
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        CardContainer {
+            Text("Datos de tu cuenta", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = DarkText)
+            Spacer(modifier = Modifier.height(16.dp))
+
+            InputField(
+                label = "Nombre completo",
+                value = name,
+                placeholder = "Ingresa tu nombre y apellido",
+                onValueChange = { name = it })
+            Spacer(modifier = Modifier.height(14.dp))
+            InputField(
+                label = "Correo electrónico",
+                value = email,
+                placeholder = "nombre@institucion.cl",
+                onValueChange = { email = it })
+            Spacer(modifier = Modifier.height(14.dp))
+            InputField(
+                label = "Contraseña",
+                value = password,
+                placeholder = "Crea una contraseña",
+                isPassword = true,
+                onValueChange = { password = it })
+            Text("Usa al menos 8 caracteres.", fontSize = 12.sp, color = Color.Gray, modifier = Modifier.padding(top = 4.dp, bottom = 14.dp))
+           InputField(
+                label = "Confirmar contraseña",
+                value = confirmPassword,
+                placeholder = "Repite tu contraseña",
+                isPassword = true,
+                onValueChange = { confirmPassword = it })
+
+            Spacer(modifier = Modifier.height(20.dp))
+            PrimaryButton(text = "Registrarse") { if (name.isNotBlank() && email.isNotBlank()) showRegisterDialog = true }
+
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Text("¿Ya tienes una cuenta? ", fontSize = 14.sp, color = Color.Gray)
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            BackButton(onClick = onBackToLoginClick)
+        }
+
+        Text("Registro destinado a integrantes de la comunidad CENAMAD.", fontSize = 13.sp, color = Color.Gray, modifier = Modifier.padding(horizontal = 4.dp))
+    }
+}
