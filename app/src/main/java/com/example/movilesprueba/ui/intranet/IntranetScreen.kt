@@ -4,6 +4,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,10 +12,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Shield
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.SearchBarDefaults.InputField
@@ -258,4 +262,18 @@ fun RegistroView(onBackToLoginClick: () -> Unit) {
 
         Text("Registro destinado a integrantes de la comunidad CENAMAD.", fontSize = 13.sp, color = Color.Gray, modifier = Modifier.padding(horizontal = 4.dp))
     }
+}
+
+// -----------------------------------------------------------
+// COMPONENTES REUTILIZABLES
+// -----------------------------------------------------------
+@Composable
+fun CardContainer(content: @Composable ColumnScope.() -> Unit) {
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        modifier = Modifier.fillMaxWidth(),
+        content = { Column(modifier = Modifier.padding(20.dp), content = content) }
+    )
 }
