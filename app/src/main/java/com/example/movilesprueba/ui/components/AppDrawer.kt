@@ -172,8 +172,22 @@ fun DrawerSimpleItem(title: String, onClick: () -> Unit){
 @Composable
 fun DrawerExpandableItem(
     title: String,
-    subItem: List<String>,
+    subItems: List<String>,
     onSubItemClick: (String) -> Unit
+    /*title: nombre del grupo principal
+    * subItems: lista de opciones secundarias
+    * onSubItemClick: acción que se ejecuta cuando el usuario selecciona una subopción específica*/
 ){
-    var expanded by remember { mutableStateOf(false) }
+    var expanded by remember { mutableStateOf(false) } /*Guarda de forma interna si la lista está desplegada(true) o contraída(false)*/
+
+    Column(modifier = Modifier.padding(16.dp)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { expanded = !expanded },/*Al hacer click en la fila
+                cambia el estado de expanded invirtiendo su valor*/
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) { }
+    }
 }
