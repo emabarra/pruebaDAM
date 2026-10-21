@@ -139,3 +139,9 @@ fun AppDrawer( /*Construye y gestiona el menú lateral de navegación desplegabl
         }
     }
 }
+
+/*Componente reutilizable que dibuja una opción individual en forma de tarjta para el menú lateral*/
+@Composable
+fun DrawerSimpleItem(title: String, onClick: () -> Unit){
+
+}
