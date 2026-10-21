@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
@@ -101,7 +102,9 @@ fun IntranetScreen(viewModel: IntranetViewModel = viewModel()) {
         }
     }
 }
-
+//================================================
+//1. LOGIN
+//================================================
 @Composable
 fun LoginView(onForgotPasswordClick: () -> Unit, onRegisterClick: () -> Unit) {
     var email by remember { mutableStateOf("") }
@@ -150,5 +153,43 @@ fun LoginView(onForgotPasswordClick: () -> Unit, onRegisterClick: () -> Unit) {
         }
 
         InfoCard(icon = Icons.Outlined.Shield, title = "Acceso institucional", description = "Este espacio está destinado a integrantes de la comunidad CENAMAD.")
+    }
+}
+
+// -----------------------------------------------------------
+// 2. RECUPERAR CONTRASEÑA
+// -----------------------------------------------------------
+@Composable
+fun RecuperarPasswordView(onBackToLoginClick: () -> Unit) {
+    var email by remember { mutableStateOf("") }
+    var showDialog by remember { mutableStateOf(false) }
+
+    if (showDialog) {
+        SimpleModal(
+            title = "Correo enviado",
+            message = "Hemos enviado las instrucciones para restablecer tu contraseña al correo:\n\n$email",
+            onDismiss = { showDialog = false; onBackToLoginClick() }
+        )
+    }
+
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        CardContainer {
+            Text("Recibe un enlace de recuperación", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = DarkText)
+            Text("Ingresa el correo electrónico asociado a tu cuenta. Te enviaremos un enlace para crear una nueva contraseña.", fontSize = 14.sp, color = Color.Gray, modifier = Modifier.padding(top = 6.dp, bottom = 16.dp))
+
+            InputField(
+                label = "Correo electrónico",
+                value = email,
+                placeholder = "nombre@institucion.cl",
+                onValueChange = { email = it })
+
+            Spacer(modifier = Modifier.height(20.dp))
+            PrimaryButton(text = "Enviar enlace de recuperación") { if (email.isNotBlank()) showDialog = true }
+
+            Spacer(modifier = Modifier.height(16.dp))
+            BackButton(onClick = onBackToLoginClick)
+        }
+
+        InfoCard(icon = Icons.Outlined.Email, title = "Revisa tu correo", description = "Si no encuentras el mensaje, revisa también la carpeta de spam o correo no deseado.")
     }
 }
