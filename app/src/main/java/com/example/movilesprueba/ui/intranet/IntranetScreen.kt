@@ -357,3 +357,23 @@ fun SimpleModal(title: String, message: String, buttonText: String = "Aceptar", 
         containerColor = Color.White
     )
 }
+
+@Composable
+fun InfoCard(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String, description: String) {
+    Card(
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = InfoBoxBg),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.Top) {
+            Icon(icon, contentDescription = null, tint = PrimaryCyan)
+            Spacer(modifier = Modifier.width(12.dp))
+            Column {
+                Text(title, fontSize = 14.sp, fontWeight = FontWeight.Bold, color = DarkText)
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(description, fontSize = 13.sp, color = Color.Gray)
+            }
+        }
+    }
+}
