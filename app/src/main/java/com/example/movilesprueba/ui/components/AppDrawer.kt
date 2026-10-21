@@ -47,11 +47,27 @@ fun AppDrawer( /*Construye y gestiona el menú lateral de navegación desplegabl
             )
 
             /*Quienes somos*/
-            DrawerSimpleItem(
+            DrawerExpandableItem(
                 title = "Quienes somos",
                 subItems = listOf("Qué es CENAMAD", "Nuestras líneas"),
                 onSubItemClick = { subItem ->
                     onNavigate("quienes_somos/$subItem")
+                    onCloseDrawer()
+                }
+            )
+
+            /*Equipos*/
+            DrawerExpandableItem(
+                title = "Equipos",
+                subItems = listOf(
+                    "Dirección",
+                    "Directorio",
+                    "Subdirección de Investigación",
+                    "Subdirección de Transferencia",
+                    "Subdirección de Operaciones"
+                ),
+                onSubItemClick = { subItem ->
+                    onNavigate("equipos/$subItem")
                     onCloseDrawer()
                 }
             )
