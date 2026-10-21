@@ -45,6 +45,16 @@ fun AppDrawer( /*Construye y gestiona el menú lateral de navegación desplegabl
                 title = "Indicadores de Productividad",
                 onClick = { onNavigate("indicadores"); onCloseDrawer }
             )
+
+            /*Quienes somos*/
+            DrawerSimpleItem(
+                title = "Quienes somos",
+                subItems = listOf("Qué es CENAMAD", "Nuestras líneas"),
+                onSubItemClick = { subItem ->
+                    onNavigate("quienes_somos/$subItem")
+                    onCloseDrawer()
+                }
+            )
         }
     }
 }
