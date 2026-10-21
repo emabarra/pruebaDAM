@@ -21,11 +21,14 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 val TopBarColor = Color(0xFF00BCE4)
 val DrawerBgColor = Color(0xFFF8F9FA)
@@ -125,6 +128,12 @@ fun AppDrawer( /*Construye y gestiona el menú lateral de navegación desplegabl
                             modifier = Modifier.size(20.dp)
                         )
                     }
+                    Text(
+                        text = "Intranet",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF1F2937)
+                    )
                 }
             }
         }
