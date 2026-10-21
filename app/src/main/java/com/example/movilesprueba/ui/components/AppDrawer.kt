@@ -143,5 +143,24 @@ fun AppDrawer( /*Construye y gestiona el menú lateral de navegación desplegabl
 /*Componente reutilizable que dibuja una opción individual en forma de tarjta para el menú lateral*/
 @Composable
 fun DrawerSimpleItem(title: String, onClick: () -> Unit){
+                    /*title: texto que se mostra´ra dentro de la tarjeta.
+                    * onClick: función lambda que se ejecutará cuando el usuario toque la tarjeta.*/
 
+    /*Encapsula el elemento en una tarjeta blanca*/
+    Card(
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable  { onClick() }
+    ) {
+        Text(
+            text = title,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF1F2937),
+            modifier = Modifier.padding(16.dp)
+        )
+    }
 }
