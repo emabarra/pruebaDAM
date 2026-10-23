@@ -48,7 +48,7 @@ fun MainScreen(){
     /*"noticias" es la vista principal inicial de la app*/
     var currentRoute by remember { mutableStateOf("noticias") }
 
-    /*Encapsula toda la estructura para epermitir que el menú se deslice sobre la pantalla*/
+    /*Encapsula toda la estructura para permitir que el menú se deslice sobre la pantalla*/
     ModalNavigationDrawer(
         drawerState = drawerState,
 
@@ -102,6 +102,8 @@ fun MainScreen(){
                 when(currentRoute){
                     "noticias" -> NoticiasScreen()
                     "intranet" -> IntranetScreen()
+                    "quienes_somos/Qué es CENAMAD" -> QuienesSomosScreen()
+                    // "quienes_somos/Nuestras líneas" -> NuestrasLineasScreen() - Ruta Preeliminar
                     else -> {
                         //Marcador para las demás secciones a medida que se creen
                         Box(
