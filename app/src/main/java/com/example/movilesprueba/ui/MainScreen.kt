@@ -106,8 +106,9 @@ fun MainScreen(){
                 when(currentRoute){
                     "noticias" -> NoticiasScreen()
                     "intranet" -> IntranetScreen()
-                    "quienes_somos/Que es CENAMAD" -> QuienesSomosScreen()
+                    "quienes_somos/Qué es CENAMAD" -> QuienesSomosScreen()
                     "equipos/Dirección" -> DireccionScreen()
+                    "equipos/Directorio" -> DirectorioScreen()
 
                     else -> {
 
