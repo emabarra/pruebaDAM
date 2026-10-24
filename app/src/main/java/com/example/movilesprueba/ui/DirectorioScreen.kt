@@ -20,6 +20,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,7 +29,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.movilesprueba.ui.components.TopBarColor
+import com.example.movilesprueba.viewmodel.EquiposViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, heightDp = 2200)
@@ -69,8 +73,11 @@ fun DirectorioScreenPreview() {
 }
 
 @Composable
-fun DirectorioScreen() {
+fun DirectorioScreen(
+    viewModel: EquiposViewModel = viewModel()
+) {
     val scrollState = rememberScrollState()
+    val directorioList by viewModel.directorio.collectAsState()
 
     Column(
         modifier = Modifier
@@ -86,125 +93,13 @@ fun DirectorioScreen() {
             color = Color.Black
         )
 
-        MiembroItem(
-            nombre = "Juan Pablo Pereira",
-            cargo = "Presidente del directorio",
-            institucion = "CENAMAD"
-        )
-
-        MiembroItem(
-            nombre = "José Luis Almozán",
-            cargo = "Director",
-            institucion = "CENAMAD"
-        )
-
-        MiembroItem(
-            nombre = "Francisca Lorenzini",
-            cargo = "Gerente General",
-            institucion = "CENAMAD"
-        )
-
-        MiembroItem(
-            nombre = "Mario Ubilla",
-            cargo = "Facultad de Arquitectura, Diseño y Estudios Urbanos",
-            institucion = "Universidad Católica"
-        )
-
-        MiembroItem(
-            nombre = "Christian Ledezma",
-            cargo = "Facultad de Ingeniería",
-            institucion = "Universidad Católica"
-        )
-
-        MiembroItem(
-            nombre = "Alejandra Engler",
-            cargo = "Facultad de Agronomía y Sistemas Naturales",
-            institucion = "Universidad Católica"
-        )
-
-        MiembroItem(
-            nombre = "Pablo Maturana",
-            cargo = "Escuela de Construcción Civil",
-            institucion = "Universidad Católica"
-        )
-
-        MiembroItem(
-            nombre = "Osvaldo Moreno",
-            cargo = "Escuela de Arquitectura",
-            institucion = "Universidad Católica"
-        )
-
-        MiembroItem(
-            nombre = "Ramón Molina",
-            cargo = "Director Ejecutivo Centro de Innovación",
-            institucion = "Universidad Católica"
-        )
-
-        MiembroItem(
-            nombre = "Francisco Figueroa",
-            cargo = "Gerente Comercial",
-            institucion = "Maderas Arauco"
-        )
-
-        MiembroItem(
-            nombre = "Mario Yáñez",
-            cargo = "Gerente de Ingeniería e Innovación",
-            institucion = "Tecnopanel"
-        )
-
-        MiembroItem(
-            nombre = "Rodrigo Besnier",
-            cargo = "Gerente General",
-            institucion = "Arxada Quimetal"
-        )
-
-        MiembroItem(
-            nombre = "Gina Cerda",
-            cargo = "Jefa Desarrollo & Innovación",
-            institucion = "CMPC"
-        )
-
-        MiembroItem(
-            nombre = "Enrique Mc-Manus",
-            cargo = "Jefe Desarrollo Construcción en Madera",
-            institucion = "Arauco"
-        )
-
-        MiembroItem(
-            nombre = "Antonio Minte",
-            cargo = "Gerente General",
-            institucion = "CORMA"
-        )
-
-        MiembroItem(
-            nombre = "Verónica Loewe",
-            cargo = "Investigadora Principal",
-            institucion = "INFOR"
-        )
-
-        MiembroItem(
-            nombre = "Rafael Rubilar",
-            cargo = "Investigador Principal",
-            institucion = "Universidad de Concepción"
-        )
-
-        MiembroItem(
-            nombre = "Andrés Fuentes",
-            cargo = "Investigador Principal",
-            institucion = "Universidad de La Frontera"
-        )
-
-        MiembroItem(
-            nombre = "Roberto Pizarro",
-            cargo = "Investigador Principal",
-            institucion = "Universidad de Talca"
-        )
-
-        MiembroItem(
-            nombre = "Mario Núñez",
-            cargo = "Investigador Principal",
-            institucion = "Universidad del Bío-Bío"
-        )
+        directorioList.forEach { miembro ->
+            MiembroItem(
+                nombre = miembro.nombre,
+                cargo = miembro.cargo,
+                institucion = miembro.institucion
+            )
+        }
 
         Spacer(modifier = Modifier.height(24.dp))
     }

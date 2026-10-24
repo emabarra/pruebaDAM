@@ -109,6 +109,7 @@ fun MainScreen(){
                     "quienes_somos/Qué es CENAMAD" -> QuienesSomosScreen()
                     "equipos/Dirección" -> DireccionScreen()
                     "equipos/Directorio" -> DirectorioScreen()
+                    "alianzas" -> AlianzasScreen()
 
                     else -> {
 
