@@ -47,7 +47,7 @@ fun MainScreen(){
         BackHandler {
             scope.launch { drawerState.close() }
         }
-    } else if (currentRoute != "noticias") {
+    } else if (currentRoute != "notcias") {
         BackHandler {
             currentRoute = "noticias"
         }
@@ -106,7 +106,7 @@ fun MainScreen(){
                 when(currentRoute){
                     "noticias" -> NoticiasScreen()
                     "intranet" -> IntranetScreen()
-                    "quienes_somos/Qué es CENAMAD" -> QuienesSomosScreen()
+                    "quienes_somos/Que es CENAMAD" -> QuienesSomosScreen()
                     "equipos/Dirección" -> DireccionScreen()
 
                     else -> {

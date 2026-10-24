@@ -60,7 +60,7 @@ fun DireccionScreenPreview() {
                     IconButton(onClick = {}) {
                         Icon(
                             imageVector = Icons.Default.Menu,
-                            contentDescription = "Menú",
+                            contentDescription = "Menu",
                             tint = Color.White
                         )
                     }
