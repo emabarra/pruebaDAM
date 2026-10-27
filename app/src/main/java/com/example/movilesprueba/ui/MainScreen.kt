@@ -105,6 +105,7 @@ fun MainScreen(){
             Box(modifier = Modifier.padding(paddingValues)){
                 when(currentRoute){
                     "noticias" -> NoticiasScreen()
+                    "indicadores" -> IndicadoresScreen()
                     "intranet" -> IntranetScreen()
                     "quienes_somos/Qué es CENAMAD" -> QuienesSomosScreen()
                     "equipos/Dirección" -> DireccionScreen()
