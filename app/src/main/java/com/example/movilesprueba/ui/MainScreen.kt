@@ -108,6 +108,7 @@ fun MainScreen(){
                     "indicadores" -> IndicadoresScreen()
                     "intranet" -> IntranetScreen()
                     "quienes_somos/Qué es CENAMAD" -> QuienesSomosScreen()
+                    "quienes_somos/Nuestras líneas" -> NuestrasLineasScreen()
                     "equipos/Dirección" -> DireccionScreen()
                     "equipos/Directorio" -> DirectorioScreen()
                     "equipos/Subdirección de Transferencia" -> SubdireccionTransferenciaScreen()
