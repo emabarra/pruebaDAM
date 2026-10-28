@@ -113,6 +113,7 @@ fun MainScreen(){
                     "equipos/Directorio" -> DirectorioScreen()
                     "equipos/Subdirección de Transferencia" -> SubdireccionTransferenciaScreen()
                     "equipos/Subdirección de Investigación" -> SubdireccionInvestigacionScreen()
+                    "equipos/Subdirección de Operaciones" -> SubdireccionOperacionesScreen()
                     "alianzas" -> AlianzasScreen()
 
                     else -> {
