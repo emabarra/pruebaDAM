@@ -22,6 +22,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+
+
 
 data class EjeEstrategico(
     val numero: String,
@@ -84,7 +92,8 @@ fun NuestrasLineasScreen() {
                 "Inclusión social y equidad de género en la cadena del valor.",
                 "Vinculación e integración internacional."
             )
-        )
+        ),
+
     )
 
     Column(
@@ -114,6 +123,8 @@ fun NuestrasLineasScreen() {
         ejes.forEach { eje ->
             EjeEstrategicoSeccion(eje = eje)
         }
+
+        MapaSedeCenamad()
 
         Spacer(modifier = Modifier.height(24.dp))
     }
@@ -189,6 +200,55 @@ fun EjeEstrategicoSeccion(eje: EjeEstrategico) {
                         color = Color(0xFF4B5563)
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun MapaSedeCenamad() {
+    // Coordenadas aproximadas del Centro de Innovación UC Anacleto Angelini (Campus San Joaquín)
+    val ubicacionCenamad = LatLng(-33.49936500787212, -70.61654033901539)
+
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(ubicacionCenamad, 16f)
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp)
+    ) {
+        Text(
+            text = "¿Quieres saber dónde está nuestra sede?. Acá abajo puedes verlo",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF1F2937),
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        Text(
+            text = "Centro de Innovación en Madera UC - Edificio Anacleto Angelini.\nAv. Vicuña Mackenna 4860, Piso 7, Macul, Santiago.",
+            fontSize = 14.sp,
+            color = Color.DarkGray,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        Card(
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(250.dp)
+        ) {
+            GoogleMap(
+                modifier = Modifier.fillMaxSize(),
+                cameraPositionState = cameraPositionState
+            ) {
+                Marker(
+                    state = MarkerState(position = ubicacionCenamad),
+                    title = "CENAMAD",
+                    snippet = "Centro Nacional de Excelencia para la Industria de la Madera"
+                )
             }
         }
     }
