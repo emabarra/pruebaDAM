@@ -1,7 +1,6 @@
 package com.example.movilesprueba.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,7 +16,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.OutlinedButton
@@ -39,16 +37,16 @@ import com.example.movilesprueba.model.Noticia
 import com.example.movilesprueba.viewmodel.NoticiasViewModel
 
 @Composable
-fun NoticiasScreen(viewModel: NoticiasViewModel = viewModel()){
+fun NoticiasScreen(viewModel: NoticiasViewModel = viewModel()) {
     val noticias by viewModel.noticias.collectAsState()
     val noticiaSeleccionada by viewModel.noticiaSeleccionada.collectAsState()
 
-    if (noticiaSeleccionada != null){
+    if (noticiaSeleccionada != null) {
         NoticiaDetalleView(
             noticia = noticiaSeleccionada!!,
             onBack = { viewModel.limpiarSeleccion() }
         )
-    }else{
+    } else {
         NoticiasListaView(
             noticias = noticias,
             onNoticiaClick = { noticia -> viewModel.seleccionarNoticia(noticia) }
@@ -57,7 +55,7 @@ fun NoticiasScreen(viewModel: NoticiasViewModel = viewModel()){
 }
 
 @Composable
-fun NoticiasListaView(noticias: List<Noticia>, onNoticiaClick: (Noticia) -> Unit){
+fun NoticiasListaView(noticias: List<Noticia>, onNoticiaClick: (Noticia) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -71,9 +69,8 @@ fun NoticiasListaView(noticias: List<Noticia>, onNoticiaClick: (Noticia) -> Unit
         )
 
         LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            items(noticias){ noticia ->
+            items(noticias) { noticia ->
                 NoticiaCard(noticia = noticia, onClick = { onNoticiaClick(noticia) })
-
             }
         }
     }
@@ -162,7 +159,6 @@ fun NoticiaDetalleView(noticia: Noticia, onBack: () -> Unit) {
             color = Color(0xFF1F2937)
         )
 
-        // Espacio para la imagen de la noticia (Listo para cuando coloques tu imagen en res/drawable)
         Card(
             shape = RoundedCornerShape(12.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -176,7 +172,7 @@ fun NoticiaDetalleView(noticia: Noticia, onBack: () -> Unit) {
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.isologo_cenamad_solo), // TODO: Reemplazar con la imagen de la noticia en res/drawable cuando la agregues
+                    painter = painterResource(id = R.drawable.isologo_cenamad_solo),
                     contentDescription = "Imagen de la noticia",
                     modifier = Modifier
                         .fillMaxWidth()
@@ -186,7 +182,6 @@ fun NoticiaDetalleView(noticia: Noticia, onBack: () -> Unit) {
             }
         }
 
-        // Información adicional y metadatos de la noticia
         Card(
             shape = RoundedCornerShape(12.dp),
             colors = CardDefaults.cardColors(containerColor = Color(0xFFF9FAFB)),
