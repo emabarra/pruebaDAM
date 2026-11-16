@@ -1,15 +1,17 @@
 package com.example.movilesprueba.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.movilesprueba.model.Noticia
 import com.example.movilesprueba.repository.NoticiasRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
-class NoticiasViewModel (
+class NoticiasViewModel(
     private val repository: NoticiasRepository = NoticiasRepository()
-) : ViewModel(){
+) : ViewModel() {
 
     private val _noticias = MutableStateFlow<List<Noticia>>(emptyList())
     val noticias: StateFlow<List<Noticia>> = _noticias.asStateFlow()
@@ -21,15 +23,17 @@ class NoticiasViewModel (
         cargarNoticias()
     }
 
-    private fun cargarNoticias(){
-        _noticias.value = repository.getNoticiasRelacionadas()
+    private fun cargarNoticias() {
+        viewModelScope.launch {
+            _noticias.value = repository.obtenerNoticias()
+        }
     }
 
-    fun seleccionarNoticia(noticia: Noticia){
+    fun seleccionarNoticia(noticia: Noticia) {
         _noticiaSeleccionada.value = noticia
     }
 
-    fun limpiarSeleccion(){
+    fun limpiarSeleccion() {
         _noticiaSeleccionada.value = null
     }
 }
