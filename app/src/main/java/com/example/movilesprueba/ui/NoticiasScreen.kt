@@ -35,6 +35,21 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.movilesprueba.R
 import com.example.movilesprueba.model.Noticia
 import com.example.movilesprueba.viewmodel.NoticiasViewModel
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
+import com.example.movilesprueba.utils.mostrarNotificacionLeerMasTarde
 
 @Composable
 fun NoticiasScreen(viewModel: NoticiasViewModel = viewModel()) {
@@ -123,6 +138,19 @@ fun NoticiaCard(noticia: Noticia, onClick: () -> Unit) {
 @Composable
 fun NoticiaDetalleView(noticia: Noticia, onBack: () -> Unit) {
     val scrollState = rememberScrollState()
+    val context = LocalContext.current
+
+    // LAqui se lanza y se pide el permiso pa mostrar notificaciones
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            mostrarNotificacionLeerMasTarde(context, noticia.titulo)
+            Toast.makeText(context, "Recordatorio creado", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "Permiso de notificaciones denegado", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -131,9 +159,51 @@ fun NoticiaDetalleView(noticia: Noticia, onBack: () -> Unit) {
             .verticalScroll(scrollState),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        OutlinedButton(onClick = onBack) {
-            Text("Volver")
+        // Fila superior con el volver y leer mas tarde
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            OutlinedButton(onClick = onBack) {
+                Text("Volver")
+            }
+
+            Button(
+                onClick = {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        // Aqui se verifica si ya tiene el permiso el usuario
+                        val tienePermiso = ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.POST_NOTIFICATIONS
+                        ) == PackageManager.PERMISSION_GRANTED
+
+                        if (tienePermiso) {
+                            mostrarNotificacionLeerMasTarde(context, noticia.titulo)
+                            Toast.makeText(context, "Recordatorio creado", Toast.LENGTH_SHORT).show()
+                        } else {
+                            // Aqui se pide el permiso al usuario
+                            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        }
+                    } else {
+
+                        mostrarNotificacionLeerMasTarde(context, noticia.titulo)
+                        Toast.makeText(context, "Recordatorio creado", Toast.LENGTH_SHORT).show()
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00BCE4)),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Notifications,
+                    contentDescription = "Recordatorio",
+                    tint = Color.White
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text("Leer más tarde", color = Color.White, fontWeight = FontWeight.Bold)
+            }
         }
+
 
         Row(
             modifier = Modifier.fillMaxWidth(),
