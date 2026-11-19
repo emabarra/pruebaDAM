@@ -21,4 +21,11 @@ import retrofit2.Response
 @OptIn(ExperimentalCoroutinesApi::class)
 class NoticiasViewModelTest {
 
+    private val dispatcher = StandardTestDispatcher()
+
+    @Before
+    fun preparar(){
+        Dispatchers.setMain(dispatcher)
+    }
+
 }
