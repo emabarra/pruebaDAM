@@ -48,4 +48,22 @@ class fNoticiasRepositoryTest{
 
     }
 
+    @Test
+    fun `propaga errores http`() = runTest {
+        println("INICIO: comprobar la propagacion deerrores HTTP.")
+        println("PREPARACION: el servidor local simulado respondera con HTTP 500.")
+        servidor.enqueue(MockResponse().setResponseCode(500))
+
+        println("ACCION: solicitar personajes al servidor local.")
+        try {
+            repository.obtenerNoticias()
+            throw AssertionError("Se esperaba un HttpException")
+        }catch (error: HttpException){
+            println("COMPROBACION: el error recibido debe tener codigo 500.")
+            assertEquals(500, error.code())
+        }
+
+        println("CORRECTO: el repositorio propago el error HTTP 500.")
+    }
+
 }
