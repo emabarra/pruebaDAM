@@ -28,4 +28,9 @@ class NoticiasViewModelTest {
         Dispatchers.setMain(dispatcher)
     }
 
+    @After
+    fun limpiar(){
+        Dispatchers.resetMain()
+    }
+
 }
