@@ -60,6 +60,12 @@ dependencies {
     // Lifecycle ViewModel + LiveData (si usas LiveData en lugar de StateFlow)
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+
+    // Para kotlinx.coroutines.test.runTest (coincide con tu versión 1.7.3 de corrutinas)
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+
+    // Para okhttp3.mockwebserver.MockWebServer y MockResponse
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
