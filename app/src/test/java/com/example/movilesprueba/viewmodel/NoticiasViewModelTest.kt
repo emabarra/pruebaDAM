@@ -35,6 +35,19 @@ class NoticiasViewModelTest {
         Dispatchers.resetMain()
     }
 
+    @Test
+    fun `una lista vacia se publica como exito`() = runTest {
+        println("INICIO: comprobar una lista vacia.")
+        println("PREPARACION: el repositorio falso no devolvera noticias.")
+        val viewModel = NoticiasViewModel(FakeRepository{emptyList()})
+
+        println("ACCION: ejecutar la carga.")
+        advanceUntilIdle()
+        println("COMPROBACION: una lista vacia debe ser un resultado exitoso.")
+        assertEquals(NoticiasUiState.Exito(emptyList()), viewModel.estado.value)
+        println("CORRECTO: se publico una lista vacia sin error.")
+    }
+
     private class FakeRepository(
         private val respuesta: suspend () -> List<Noticia>
     ): NoticiasRepository{
