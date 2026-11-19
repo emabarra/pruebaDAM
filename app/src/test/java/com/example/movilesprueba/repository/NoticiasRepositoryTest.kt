@@ -21,4 +21,10 @@ class fNoticiasRepositoryTest{
         val api = RetrofitInstance.crearApi(servidor.url("/api:bZ0tEGi6/").toString())
         repository = NoticiasRepositoryImpl(api)
     }
+
+    @After
+    fun limpiar(){
+        servidor.shutdown()
+    }
+
 }
