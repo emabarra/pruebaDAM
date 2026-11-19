@@ -1,5 +1,7 @@
 package com.example.movilesprueba.viewmodel
 
+import com.example.movilesprueba.model.Noticia
+import com.example.movilesprueba.repository.NoticiasRepository
 import java.io.IOException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
@@ -33,4 +35,9 @@ class NoticiasViewModelTest {
         Dispatchers.resetMain()
     }
 
+    private class FakeRepository(
+        private val respuesta: suspend () -> List<Noticia>
+    ): NoticiasRepository{
+        override suspend fun obtenerNoticias(): List<Noticia> = respuesta()
+    }
 }
