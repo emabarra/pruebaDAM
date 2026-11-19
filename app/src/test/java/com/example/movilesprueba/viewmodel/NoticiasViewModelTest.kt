@@ -48,6 +48,21 @@ class NoticiasViewModelTest {
         println("CORRECTO: se publico una lista vacia sin error.")
     }
 
+    @Test
+    fun `un error http publica error`() = runTest {
+        println("INICIO: comprobar un error HTTP.")
+        println("PREPARACION: el repositorio falso respondera con un HTTP 500.")
+        val viewModel = NoticiasViewModel(FakeRepository{
+            throw HttpException(Response.error<Any>(500, "".toResponseBody()))
+        })
+
+        println("ACCION: ejecutar la carga.")
+        advanceUntilIdle()
+        println("COMPROBACION: el ViewModel debe publicar el estado de error.")
+        assertEquals(NoticiasUiState.Error, viewModel.estado.value)
+        println("CORRECTO: se publico el estado de error.")
+    }
+
     private class FakeRepository(
         private val respuesta: suspend () -> List<Noticia>
     ): NoticiasRepository{
