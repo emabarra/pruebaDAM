@@ -50,10 +50,21 @@ import androidx.compose.material3.Icon
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import com.example.movilesprueba.utils.mostrarNotificacionLeerMasTarde
+import androidx.compose.material3.CircularProgressIndicator
+import com.example.movilesprueba.viewmodel.NoticiasUiState
+import com.example.movilesprueba.remote.RetrofitInstance
+import com.example.movilesprueba.repository.NoticiasRepositoryImpl
+
 
 @Composable
-fun NoticiasScreen(viewModel: NoticiasViewModel = viewModel()) {
-    val noticias by viewModel.noticias.collectAsState()
+fun NoticiasScreen(
+    viewModel: NoticiasViewModel = viewModel(
+        factory = NoticiasViewModel.Factory(
+            NoticiasRepositoryImpl(RetrofitInstance.crearApi())
+        )
+    )
+) {
+    val estado by viewModel.estado.collectAsState()
     val noticiaSeleccionada by viewModel.noticiaSeleccionada.collectAsState()
 
     if (noticiaSeleccionada != null) {
@@ -62,10 +73,44 @@ fun NoticiasScreen(viewModel: NoticiasViewModel = viewModel()) {
             onBack = { viewModel.limpiarSeleccion() }
         )
     } else {
-        NoticiasListaView(
-            noticias = noticias,
-            onNoticiaClick = { noticia -> viewModel.seleccionarNoticia(noticia) }
-        )
+        when (val uiState = estado) {
+            is NoticiasUiState.Cargando -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = Color(0xFF00BCE4))
+                }
+            }
+            is NoticiasUiState.Exito -> {
+                NoticiasListaView(
+                    noticias = uiState.noticias,
+                    onNoticiaClick = { noticia -> viewModel.seleccionarNoticia(noticia) }
+                )
+            }
+            is NoticiasUiState.Error -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "No se pudieron cargar las noticias.",
+                        fontSize = 16.sp,
+                        color = Color.Gray
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Button(
+                        onClick = { viewModel.cargarNoticias() },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00BCE4))
+                    ) {
+                        Text("Reintentar", color = Color.White)
+                    }
+                }
+            }
+        }
     }
 }
 
