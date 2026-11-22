@@ -108,6 +108,11 @@ fun AppDrawer( /*Construye y gestiona el menú lateral de navegación desplegabl
                 onClick = { onNavigate("trabaja_con_nosotros"); onCloseDrawer() }
             )
 
+            DrawerSimpleItem(
+                title = "Gestión de Noticias",
+                onClick = { onNavigate("gestion_noticias"); onCloseDrawer() }
+            )
+
             /*Intranet*/
             Card(
                 shape = RoundedCornerShape(12.dp),

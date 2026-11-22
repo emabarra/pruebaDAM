@@ -116,6 +116,7 @@ fun MainScreen(){
                     "equipos/Subdirección de Operaciones" -> SubdireccionOperacionesScreen()
                     "alianzas" -> AlianzasScreen()
                     "trabaja_con_nosotros" -> TrabajaConNosotrosScreen()
+                    "gestion_noticias" -> GestionNoticiasScreen(onNavigateToIntranet = { currentRoute = "intranet" })
 
                     else -> {
 
