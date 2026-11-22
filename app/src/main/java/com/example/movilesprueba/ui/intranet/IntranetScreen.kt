@@ -70,27 +70,10 @@ fun IntranetScreen(viewModel: IntranetViewModel = viewModel()) {
         Text(subtitle, fontSize = 14.sp, color = Color.Gray, modifier = Modifier.padding(top = 4.dp, bottom = 16.dp))
 
         if (isLoggedIn) {
-            // -----------------------------------------------------------
-            // VISTA CUANDO EL USUARIO TIENE SESIÓN ACTIVA (PERSISTIDA)
-            // -----------------------------------------------------------
-            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                CardContainer {
-                    Text("¡Bienvenido/a de nuevo!", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = DarkText)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text("Sesión iniciada como: $userEmail", fontSize = 14.sp, color = Color.Gray)
-
-                    Spacer(modifier = Modifier.height(20.dp))
-                    PrimaryButton(text = "Cerrar sesión") {
-                        viewModel.cerrarSesion()
-                    }
-                }
-
-                InfoCard(
-                    icon = Icons.Outlined.Shield,
-                    title = "Sesión Segura",
-                    description = "Tu sesión permanecerá abierta en este dispositivo hasta que elijas cerrarla manualmente."
-                )
-            }
+            PerfilUsuarioView(
+                userEmail = userEmail,
+                onCerrarSesion = { viewModel.cerrarSesion() }
+            )
         } else {
             // -----------------------------------------------------------
             // FLUJO DE FORMULARIOS DE ACCESO (LOGIN, REGISTRO, RECUPERACIÓN)
@@ -358,5 +341,95 @@ fun InfoCard(icon: androidx.compose.ui.graphics.vector.ImageVector, title: Strin
                 Text(description, fontSize = 13.sp, color = Color.Gray)
             }
         }
+    }
+}
+
+@Composable
+fun PerfilUsuarioView(
+    userEmail: String,
+    onCerrarSesion: () -> Unit
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        CardContainer {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(64.dp)
+                        .background(PrimaryCyan, shape = androidx.compose.foundation.shape.CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Person,
+                        contentDescription = "Avatar",
+                        tint = Color.White,
+                        modifier = Modifier.size(36.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Column {
+                    Text(
+                        text = if (userEmail.contains("@")) userEmail.substringBefore("@").replace(".", " ").uppercase() else "USUARIO CENAMAD",
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = DarkText
+                    )
+                    Text(
+                        text = if (userEmail.isNotBlank()) userEmail else "usuario@cenamad.cl",
+                        fontSize = 14.sp,
+                        color = Color.Gray
+                    )
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Box(
+                        modifier = Modifier
+                            .background(Color(0xFFE8F5E9), shape = RoundedCornerShape(8.dp))
+                            .padding(horizontal = 8.dp, vertical = 3.dp)
+                    ) {
+                        Text(
+                            text = "Cuenta Activa",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF2E7D32)
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+            HorizontalDivider(color = Color(0xFFE5E7EB))
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text("Información del Perfil", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = DarkText)
+            Spacer(modifier = Modifier.height(12.dp))
+
+            PerfilItem(label = "Rol Institucional", valor = "Investigador / Integrante CENAMAD")
+            PerfilItem(label = "Institución", valor = "Pontificia Universidad Católica de Chile")
+            PerfilItem(label = "Tipo de Acceso", valor = "Intranet Completa")
+            PerfilItem(label = "Estado de Validación", valor = "Verificado")
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            PrimaryButton(text = "Cerrar sesión") {
+                onCerrarSesion()
+            }
+        }
+
+        InfoCard(
+            icon = Icons.Outlined.Shield,
+            title = "Sesión Segura",
+            description = "Tu sesión permanecerá abierta en este dispositivo hasta que elijas cerrarla manualmente."
+        )
+    }
+}
+
+@Composable
+fun PerfilItem(label: String, valor: String) {
+    Column(modifier = Modifier.padding(vertical = 4.dp)) {
+        Text(text = label, fontSize = 12.sp, color = Color.Gray)
+        Text(text = valor, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = DarkText)
     }
 }
