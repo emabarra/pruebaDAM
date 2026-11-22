@@ -248,7 +248,7 @@ fun NoticiaGestionItem(
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Text(
-                        text = noticia.categoria,
+                        text = noticia.categoria ?: "General",
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                         color = TopBarColor
@@ -268,7 +268,7 @@ fun NoticiaGestionItem(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = noticia.titulo,
+                text = noticia.titulo ?: "Sin título",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black
@@ -277,7 +277,7 @@ fun NoticiaGestionItem(
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = noticia.descripcion,
+                text = noticia.descripcion ?: "",
                 fontSize = 14.sp,
                 color = Color.DarkGray
             )
@@ -285,7 +285,7 @@ fun NoticiaGestionItem(
             Spacer(modifier = Modifier.height(6.dp))
 
             Text(
-                text = "Fecha: ${noticia.fecha}",
+                text = "Fecha: ${noticia.fecha ?: ""}",
                 fontSize = 12.sp,
                 color = Color.Gray
             )
