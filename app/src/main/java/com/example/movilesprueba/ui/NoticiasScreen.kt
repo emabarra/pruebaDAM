@@ -54,6 +54,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import com.example.movilesprueba.viewmodel.NoticiasUiState
 import com.example.movilesprueba.remote.RetrofitInstance
 import com.example.movilesprueba.repository.NoticiasRepositoryImpl
+import androidx.activity.compose.BackHandler
 
 
 @Composable
@@ -152,27 +153,27 @@ fun NoticiaCard(noticia: Noticia, onClick: () -> Unit) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = noticia.categoria,
+                    text = noticia.categoria ?: "General",
                     fontSize = 12.sp,
                     color = Color.Gray,
                     fontWeight = FontWeight.Medium
                 )
                 Text(
-                    text = noticia.fecha,
+                    text = noticia.fecha ?: "",
                     fontSize = 12.sp,
                     color = Color.Gray
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = noticia.titulo,
+                text = noticia.titulo ?: "Sin título",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = noticia.descripcion,
+                text = noticia.descripcion ?: "",
                 fontSize = 14.sp,
                 color = Color.Gray
             )
@@ -185,12 +186,17 @@ fun NoticiaDetalleView(noticia: Noticia, onBack: () -> Unit) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
 
-    // LAqui se lanza y se pide el permiso pa mostrar notificaciones
+    // Permite volver a la lista usando el botón/gesto "Atrás" del teléfono
+    BackHandler {
+        onBack()
+    }
+
+    // Launcher para pedir permiso de notificaciones en Android 13+
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted) {
-            mostrarNotificacionLeerMasTarde(context, noticia.titulo)
+            mostrarNotificacionLeerMasTarde(context, noticia.titulo ?: "Noticia")
             Toast.makeText(context, "Recordatorio creado", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(context, "Permiso de notificaciones denegado", Toast.LENGTH_SHORT).show()
@@ -200,11 +206,11 @@ fun NoticiaDetalleView(noticia: Noticia, onBack: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(scrollState),
+            .verticalScroll(scrollState)
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Fila superior con el volver y leer mas tarde
+        // Fila superior con Volver y Leer más tarde
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -216,23 +222,21 @@ fun NoticiaDetalleView(noticia: Noticia, onBack: () -> Unit) {
 
             Button(
                 onClick = {
+                    val tituloNoticia = noticia.titulo ?: "Noticia CENAMAD"
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        // Aqui se verifica si ya tiene el permiso el usuario
                         val tienePermiso = ContextCompat.checkSelfPermission(
                             context,
                             Manifest.permission.POST_NOTIFICATIONS
                         ) == PackageManager.PERMISSION_GRANTED
 
                         if (tienePermiso) {
-                            mostrarNotificacionLeerMasTarde(context, noticia.titulo)
+                            mostrarNotificacionLeerMasTarde(context, tituloNoticia)
                             Toast.makeText(context, "Recordatorio creado", Toast.LENGTH_SHORT).show()
                         } else {
-                            // Aqui se pide el permiso al usuario
                             permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                         }
                     } else {
-
-                        mostrarNotificacionLeerMasTarde(context, noticia.titulo)
+                        mostrarNotificacionLeerMasTarde(context, tituloNoticia)
                         Toast.makeText(context, "Recordatorio creado", Toast.LENGTH_SHORT).show()
                     }
                 },
@@ -249,31 +253,33 @@ fun NoticiaDetalleView(noticia: Noticia, onBack: () -> Unit) {
             }
         }
 
-
+        // Categoría y Fecha
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = noticia.categoria,
+                text = noticia.categoria ?: "General",
                 fontSize = 14.sp,
                 color = Color(0xFF00BCE4),
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = noticia.fecha,
+                text = noticia.fecha ?: "",
                 fontSize = 12.sp,
                 color = Color.Gray
             )
         }
 
+        // Título
         Text(
-            text = noticia.titulo,
+            text = noticia.titulo ?: "Sin título",
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF1F2937)
         )
 
+        // Imagen
         Card(
             shape = RoundedCornerShape(12.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -297,6 +303,7 @@ fun NoticiaDetalleView(noticia: Noticia, onBack: () -> Unit) {
             }
         }
 
+        // Tarjeta de información
         Card(
             shape = RoundedCornerShape(12.dp),
             colors = CardDefaults.cardColors(containerColor = Color(0xFFF9FAFB)),
@@ -312,7 +319,9 @@ fun NoticiaDetalleView(noticia: Noticia, onBack: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "• Autor / Fuente: Equipo de Comunicaciones CENAMAD\n• Categoría oficial: ${noticia.categoria}\n• Tiempo estimado de lectura: 3 min",
+                    text = "• Autor / Fuente: Equipo de Comunicaciones CENAMAD\n" +
+                            "• Categoría oficial: ${noticia.categoria ?: "General"}\n" +
+                            "• Tiempo estimado de lectura: 3 min",
                     fontSize = 13.sp,
                     color = Color.DarkGray
                 )
@@ -321,6 +330,7 @@ fun NoticiaDetalleView(noticia: Noticia, onBack: () -> Unit) {
 
         Spacer(modifier = Modifier.height(4.dp))
 
+        // Cuerpo de la noticia
         Text(
             text = "Detalle del artículo",
             fontSize = 16.sp,
@@ -329,7 +339,7 @@ fun NoticiaDetalleView(noticia: Noticia, onBack: () -> Unit) {
         )
 
         Text(
-            text = noticia.contenidoCompleto,
+            text = noticia.contenidoCompleto ?: noticia.descripcion ?: "Sin contenido disponible.",
             fontSize = 15.sp,
             color = Color.DarkGray,
             lineHeight = 22.sp
