@@ -1,36 +1,15 @@
 package com.example.movilesprueba.repository
 
 import com.example.movilesprueba.model.Noticia
+import com.example.movilesprueba.remote.RetrofitInstance
+import com.example.movilesprueba.remote.ApiService
 
-class NoticiasRepository {
+interface NoticiasRepository {
+    suspend fun obtenerNoticias(): List<Noticia>
+}
 
-    fun getNoticiasRelacionadas(): List<Noticia>{
-        return listOf(
-            Noticia(
-                id = "1",
-                categoria = "Ejemplo de noticia",
-                fecha = "18/10/2026",
-                titulo = "Actualización de servicios en CENAMAD",
-                descripcion = "Se informa sobre nuevas iniciativas y mejoraas en los servicios disponibles para la comunidad.",
-                contenidoCompleto = "Contenido detallado de la actualización de servicios en CENAMAD..."
-            ),
-            Noticia(
-                id = "2",
-                categoria = "Ejemplo de noticia",
-                fecha = "17/10/2026",
-                titulo = "Evento comunitario en CENAMAD",
-                descripcion = "Se invita a participar de una jornada de actividades y talleres organizados por la institución.",
-                contenidoCompleto = "Contenido detallado sobre el evento comunitario..."
-            ),
-            Noticia(
-                id = "3",
-                categoria = "Ejemplo de noticia",
-                fecha = "10/10/2026",
-                titulo = "Nuevos recursos disponibles",
-                descripcion = "Se han agregado materiales y recursos para la consulta pública en la sección de biblioteca.",
-                contenidoCompleto = "Contenido detallado sobre los nuevos recursos disponibles..."
-            )
-        )
-    }
-
+class NoticiasRepositoryImpl(
+    private val api: ApiService
+) : NoticiasRepository {
+    override suspend fun obtenerNoticias(): List<Noticia> = api.obtenerNoticias()
 }

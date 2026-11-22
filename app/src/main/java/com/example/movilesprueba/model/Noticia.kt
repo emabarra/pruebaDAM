@@ -1,7 +1,7 @@
 package com.example.movilesprueba.model
 
 data class Noticia (
-    val id: String,
+    val id: Int,
     val categoria: String,
     val fecha: String,
     val titulo: String,

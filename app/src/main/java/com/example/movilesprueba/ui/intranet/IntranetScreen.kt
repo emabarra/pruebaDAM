@@ -102,6 +102,9 @@ fun IntranetScreen(viewModel: IntranetViewModel = viewModel()) {
 // -----------------------------------------------------------
 // 1. LOGIN
 // -----------------------------------------------------------
+// -----------------------------------------------------------
+// 1. LOGIN
+// -----------------------------------------------------------
 @Composable
 fun LoginView(
     onLoginSuccess: (String) -> Unit,
@@ -112,6 +115,7 @@ fun LoginView(
     var password by remember { mutableStateOf("") }
     var rememberMe by remember { mutableStateOf(false) }
     var showWelcomeDialog by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf<String?>(null) } // Estado para el mensaje de alerta
 
     if (showWelcomeDialog) {
         SimpleModal(
@@ -129,12 +133,38 @@ fun LoginView(
             Text("Iniciar sesión", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = DarkText)
             Spacer(modifier = Modifier.height(16.dp))
 
-            InputField(label = "Correo electrónico", value = email, placeholder = "nombre@institucion.cl", onValueChange = { email = it })
+            InputField(
+                label = "Correo electrónico",
+                value = email,
+                placeholder = "nombre@institucion.cl",
+                onValueChange = { email = it; errorMessage = null }
+            )
             Spacer(modifier = Modifier.height(14.dp))
-            InputField(label = "Contraseña", value = password, placeholder = "Ingresa tu contraseña", isPassword = true, onValueChange = { password = it })
+            InputField(
+                label = "Contraseña",
+                value = password,
+                placeholder = "Ingresa tu contraseña",
+                isPassword = true,
+                onValueChange = { password = it; errorMessage = null }
+            )
+
+            // Mensaje de alerta si falta correo o contraseña
+            if (errorMessage != null) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = errorMessage!!,
+                    color = Color(0xFFDC2626),
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(checked = rememberMe, onCheckedChange = { rememberMe = it }, colors = CheckboxDefaults.colors(checkedColor = PrimaryCyan))
+                Checkbox(
+                    checked = rememberMe,
+                    onCheckedChange = { rememberMe = it },
+                    colors = CheckboxDefaults.colors(checkedColor = PrimaryCyan)
+                )
                 Text("Recuérdame", fontSize = 14.sp, color = Color.Gray)
             }
 
@@ -148,17 +178,38 @@ fun LoginView(
 
             Spacer(modifier = Modifier.height(20.dp))
             PrimaryButton(text = "Iniciar sesión") {
-                if (email.isNotBlank()) showWelcomeDialog = true
+                when {
+                    email.isBlank() -> {
+                        errorMessage = "Por favor, ingresa tu correo electrónico."
+                    }
+                    password.isBlank() -> {
+                        errorMessage = "Debes ingresar tu contraseña para iniciar sesión."
+                    }
+                    else -> {
+                        errorMessage = null
+                        showWelcomeDialog = true
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 Text("¿Aún no tienes cuenta? ", fontSize = 14.sp, color = Color.Gray)
-                Text("Regístrate", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = PrimaryCyan, modifier = Modifier.clickable { onRegisterClick() })
+                Text(
+                    "Regístrate",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = PrimaryCyan,
+                    modifier = Modifier.clickable { onRegisterClick() }
+                )
             }
         }
 
-        InfoCard(icon = Icons.Outlined.Shield, title = "Acceso institucional", description = "Este espacio está destinado a integrantes de la comunidad CENAMAD.")
+        InfoCard(
+            icon = Icons.Outlined.Shield,
+            title = "Acceso institucional",
+            description = "Este espacio está destinado a integrantes de la comunidad CENAMAD."
+        )
     }
 }
 
@@ -206,6 +257,7 @@ fun RegistroView(onBackToLoginClick: () -> Unit) {
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
     var showRegisterDialog by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
 
     if (showRegisterDialog) {
         SimpleModal(
@@ -221,16 +273,65 @@ fun RegistroView(onBackToLoginClick: () -> Unit) {
             Text("Datos de tu cuenta", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = DarkText)
             Spacer(modifier = Modifier.height(16.dp))
 
-            InputField(label = "Nombre completo", value = name, placeholder = "Ingresa tu nombre y apellido", onValueChange = { name = it })
+            InputField(
+                label = "Nombre completo",
+                value = name,
+                placeholder = "Ingresa tu nombre y apellido",
+                onValueChange = { name = it; errorMessage = null }
+            )
             Spacer(modifier = Modifier.height(14.dp))
-            InputField(label = "Correo electrónico", value = email, placeholder = "nombre@institucion.cl", onValueChange = { email = it })
+            InputField(
+                label = "Correo electrónico",
+                value = email,
+                placeholder = "nombre@institucion.cl",
+                onValueChange = { email = it; errorMessage = null }
+            )
             Spacer(modifier = Modifier.height(14.dp))
-            InputField(label = "Contraseña", value = password, placeholder = "Crea una contraseña", isPassword = true, onValueChange = { password = it })
+            InputField(
+                label = "Contraseña",
+                value = password,
+                placeholder = "Crea una contraseña",
+                isPassword = true,
+                onValueChange = { password = it; errorMessage = null }
+            )
             Text("Usa al menos 8 caracteres.", fontSize = 12.sp, color = Color.Gray, modifier = Modifier.padding(top = 4.dp, bottom = 14.dp))
-            InputField(label = "Confirmar contraseña", value = confirmPassword, placeholder = "Repite tu contraseña", isPassword = true, onValueChange = { confirmPassword = it })
+            InputField(
+                label = "Confirmar contraseña",
+                value = confirmPassword,
+                placeholder = "Repite tu contraseña",
+                isPassword = true,
+                onValueChange = { confirmPassword = it; errorMessage = null }
+            )
+
+            // Mensaje de error
+            if (errorMessage != null) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = errorMessage!!,
+                    color = Color(0xFFDC2626),
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
 
             Spacer(modifier = Modifier.height(20.dp))
-            PrimaryButton(text = "Registrarse") { if (name.isNotBlank() && email.isNotBlank()) showRegisterDialog = true }
+            PrimaryButton(text = "Registrarse") {
+                when {
+                    name.isBlank() || email.isBlank() -> {
+                        errorMessage = "Por favor, completa tu nombre y correo electrónico."
+                    }
+                    password.isBlank() -> {
+                        errorMessage = "Debes ingresar una contraseña para crear tu cuenta."
+                    }
+                    password != confirmPassword -> {
+                        errorMessage = "Las contraseñas no coinciden."
+                    }
+                    else -> {
+                        errorMessage = null
+                        showRegisterDialog = true
+                    }
+                }
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
